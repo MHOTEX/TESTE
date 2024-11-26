@@ -1,1 +1,31 @@
-document.getElementById('invisibleCaptchaShortlink').click();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão Flutuante</title>
+</head>
+<body>
+    <!-- Botão oculto que será clicado automaticamente -->
+    <button id="ok" style="display: none;">Botão Oculto</button>
+
+    <!-- Botão flutuante no meio da página -->
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <button id="triggerButton">Clique aqui</button>
+    </div>
+
+    <script>
+        // Adiciona um evento ao botão flutuante
+        document.getElementById('triggerButton').addEventListener('click', function () {
+            // Simula o clique no botão com o ID "ok"
+            const hiddenButton = document.getElementById('ok');
+            if (hiddenButton) {
+                hiddenButton.click();
+                console.log("Botão oculto 'ok' clicado!");
+            } else {
+                console.log("Botão oculto com o ID 'ok' não encontrado.");
+            }
+        });
+    </script>
+</body>
+</html>
