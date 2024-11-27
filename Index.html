@@ -1,1 +1,244 @@
-document.getElementById('invisibleCaptchaShortlink').click();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Layout System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Linear Layout (Flutuante no canto superior esquerdo) */
+        .linear-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .linear1 {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinha no canto superior esquerdo */
+            position: absolute;  /* Flutuante */
+            top: 0;
+            left: 0;
+            padding: 10px;
+            z-index: 1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Estilo da imagem */
+        .imageview-abrir-menu {
+            width: 200px; /* Tamanho ajustado */
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* Menu (inicialmente oculto) */
+        .linear2 {
+            display: none; /* Oculta o menu */
+            width: 200px;
+            background-color: #000000;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 5px;
+        }
+
+        .linear3 {
+            display: flex;
+            flex-direction: row;
+            background-color: #FFFFFF;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .textview1 {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 8px;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 16px;
+        }
+
+        .linear4 {
+            background-color: #FFFFFF;
+            padding: 8px;
+            margin: 8px 0;
+            height: 200px;
+            overflow-y: auto;
+            border-radius: 5px;
+        }
+
+        .vscroll1 {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .linear7 {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .linear-borda-button {
+            display: flex;
+            flex-direction: row;
+            background-color: #000000;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+        }
+
+        .button {
+            background-color: #FFFFFF;
+            color: #000000;
+            padding: 8px;
+            border: none;
+            font-size: 12px;
+            flex-grow: 1;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .linear-divisor {
+            height: 5px;
+            background-color: #f5f5f5;
+        }
+
+        .linear5 {
+            display: flex;
+            flex-direction: row;
+            background-color: #FFFFFF;
+            padding: 8px;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .button-small {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 8px;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            flex-grow: 1;
+            border-radius: 5px;
+        }
+
+        .linear-divisor1-button {
+            width: 5px;
+        }
+
+        /* Hidden content for "Função 1" and "Função 2" */
+        .hidden-content {
+            display: none;
+            background-color: #e0e0e0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        /* When menu is visible */
+        .menu-visible {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="linear-layout">
+        <!-- Linear1 - Flutuante -->
+        <div class="linear1">
+            <!-- Image to open the menu -->
+            <img src="https://via.placeholder.com/150" alt="Imagem do Menu" class="imageview-abrir-menu" id="openMenuBtn">
+            
+            <!-- Menu (Hidden by default) -->
+            <div class="linear2" id="menu">
+                <div class="linear3">
+                    <div class="textview1">MOD MENU</div>
+                </div>
+                <div class="linear4">
+                    <div class="vscroll1">
+                        <div class="linear7">
+                            <div class="linear-borda-button">
+                                <button class="button" id="func1">Função 1</button>
+                            </div>
+                            <div class="linear-divisor"></div>
+                            <div class="linear-borda-button">
+                                <button class="button" id="func2">Função 2</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="linear5">
+                    <button class="button-small" id="btn_sair">Sair</button>
+                    <div class="linear-divisor1-button"></div>
+                    <button class="button-small" id="btn_fechar">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden content for "Função 1" and "Função 2" -->
+        <div id="content_func1" class="hidden-content">
+            <h3>Conteúdo da Função 1</h3>
+            <p>Detalhes da Função 1 aqui...</p>
+        </div>
+        <div id="content_func2" class="hidden-content">
+            <h3>Conteúdo da Função 2</h3>
+            <p>Detalhes da Função 2 aqui...</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables to access elements
+        const openMenuBtn = document.getElementById('openMenuBtn');
+        const menu = document.getElementById('menu');
+        const btnFechar = document.getElementById('btn_fechar');
+        const btnSair = document.getElementById('btn_sair');
+        const func1Btn = document.getElementById('func1');
+        const func2Btn = document.getElementById('func2');
+        const contentFunc1 = document.getElementById('content_func1');
+        const contentFunc2 = document.getElementById('content_func2');
+
+        // Open the menu when the image is clicked
+        openMenuBtn.addEventListener('click', function() {
+            menu.classList.add('menu-visible');
+        });
+
+        // Close the menu when "Fechar" button is clicked
+        btnFechar.addEventListener('click', function() {
+            menu.classList.remove('menu-visible');
+        });
+
+        // Close everything when "Sair" button is clicked
+        btnSair.addEventListener('click', function() {
+            menu.classList.remove('menu-visible');
+            alert("Saindo...");
+            // Optionally, hide the image here if needed
+        });
+
+        // Show content for "Função 1"
+        func1Btn.addEventListener('click', function() {
+            alert('Função 1 ativada!');
+            contentFunc1.style.display = 'block';
+            contentFunc2.style.display = 'none';
+        });
+
+        // Show content for "Função 2"
+        func2Btn.addEventListener('click', function() {
+            alert('Função 2 ativada!');
+            contentFunc2.style.display = 'block';
+            contentFunc1.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
