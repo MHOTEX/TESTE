@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diálogo Flutuante</title>
+  <style>
+    /* Estilo para a imagem que abre o diálogo */
+    #openDialogImg {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+    }
+
+    /* Estilo para o diálogo flutuante */
+    #floatingDialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      z-index: 1000;
+    }
+
+    #floatingDialog h3 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+
+    #saveBtn {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #saveBtn:hover {
+      background-color: #45a049;
+    }
+
+    #detectedIds {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      max-height: 100px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+
+    /* Fundo escuro para o modal */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Imagem para abrir o diálogo -->
+<img id="openDialogImg" src="https://via.placeholder.com/50x50.png?text=Bola" alt="Abrir Diálogo">
+
+<div id="overlay"></div>
+
+<!-- Diálogo flutuante -->
+<div id="floatingDialog">
+  <h3>Modificação de Elementos</h3>
+
+  <!-- Campo para o ID do elemento -->
+  <label>
+    ID do elemento:
+    <input type="text" id="elementId" placeholder="Digite o ID">
+  </label>
+
+  <!-- Checkboxes para selecionar as funções -->
+  <label>
+    <input type="checkbox" id="changeText"> Alterar Texto
+  </label>
+  <label>
+    <input type="checkbox" id="changeColor"> Alterar Cor
+  </label>
+  <label>
+    <input type="checkbox" id="changeStyle"> Alterar Estilo
+  </label>
+  <label>
+    <input type="checkbox" id="executeClick"> Executar Clique
+  </label>
+
+  <!-- Botão para salvar -->
+  <button id="saveBtn">Salvar Alterações</button>
+
+  <!-- Campo para exibir IDs detectados -->
+  <h4>ID de elementos detectados:</h4>
+  <div id="detectedIds"></div>
+
+  <button onclick="closeDialog()">Fechar</button>
+</div>
+
+<script>
+  // Abrir o diálogo
+  const openDialogImg = document.getElementById('openDialogImg');
+  const floatingDialog = document.getElementById('floatingDialog');
+  const overlay = document.getElementById('overlay');
+
+  openDialogImg.addEventListener('click', () => {
+    floatingDialog.style.display = 'block';
+    overlay.style.display = 'block';
+    detectIds(); // Detectar IDs ao abrir o diálogo
+  });
+
+  // Fechar o diálogo
+  function closeDialog() {
+    floatingDialog.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  // Salvar alterações
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const elementId = document.getElementById('elementId').value;
+    const changeText = document.getElementById('changeText').checked;
+    const changeColor = document.getElementById('changeColor').checked;
+    const changeStyle = document.getElementById('changeStyle').checked;
+    const executeClick = document.getElementById('executeClick').checked;
+
+    const targetElement = document.getElementById(elementId);
+
+    if (!targetElement) {
+      alert('Elemento não encontrado!');
+      return;
+    }
+
+    if (changeText) {
+      targetElement.textContent = 'Texto alterado pelo diálogo!';
+    }
+
+    if (changeColor) {
+      targetElement.style.color = 'blue';
+    }
+
+    if (changeStyle) {
+      targetElement.style.fontSize = '20px';
+      targetElement.style.fontWeight = 'bold';
+    }
+
+    if (executeClick && targetElement.tagName === 'BUTTON') {
+      targetElement.click();
+    }
+
+    closeDialog();
+  });
+
+  // Detectar IDs de elementos no site
+  function detectIds() {
+    const elements = document.querySelectorAll('[id]');
+    const detectedIdsContainer = document.getElementById('detectedIds');
+    detectedIdsContainer.innerHTML = '';
+
+    elements.forEach((el) => {
+      const id = el.id;
+      const idDiv = document.createElement('div');
+      idDiv.textContent = id;
+      detectedIdsContainer.appendChild(idDiv);
+    });
+  }
+</script>
+
+</body>
+</html>
