@@ -3,65 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diálogo Flutuante</title>
+  <title>Diálogo Arrastável</title>
   <style>
-    /* Estilo para a imagem que abre o diálogo */
-    #openDialogImg {
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Estilo para o diálogo flutuante */
+    #openDialogImg {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    #openDialogImg:hover {
+      transform: scale(1.1);
+    }
+
     #floatingDialog {
       display: none;
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 300px;
+      width: 350px;
       padding: 20px;
-      background-color: white;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
       z-index: 1000;
+      cursor: grab;
     }
 
-    #floatingDialog h3 {
-      margin-top: 0;
+    #dialogHeader {
+      margin: 0;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      border-radius: 15px 15px 0 0;
+      cursor: move;
     }
 
     label {
       display: block;
       margin: 10px 0;
+      font-size: 14px;
     }
 
-    #saveBtn {
-      margin-top: 20px;
-      padding: 10px 15px;
+    input[type="text"], button {
+      width: 325px;
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
       background-color: #4CAF50;
+      width: 345px;
       color: white;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    #saveBtn:hover {
+    button:hover {
       background-color: #45a049;
     }
 
     #detectedIds {
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 5px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 1px;
       background-color: #f9f9f9;
       border: 1px solid #ddd;
       border-radius: 5px;
-      max-height: 100px;
-      overflow-y: auto;
+    }
+
+    .id-button {
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-size: 12px;
     }
 
-    /* Fundo escuro para o modal */
+    .id-button:hover {
+      background-color: #0056b3;
+    }
+
     #overlay {
       display: none;
       position: fixed;
@@ -76,55 +124,55 @@
 </head>
 <body>
 
-<!-- Imagem para abrir o diálogo -->
-<img id="openDialogImg" src="https://via.placeholder.com/50x50.png?text=Bola" alt="Abrir Diálogo">
+<img id="openDialogImg" src="https://via.placeholder.com/60x60.png?text=Bola" alt="Abrir Diálogo">
 
 <div id="overlay"></div>
 
-<!-- Diálogo flutuante -->
 <div id="floatingDialog">
-  <h3>Modificação de Elementos</h3>
+  <h3 id="dialogHeader">Editar Elementos da Página</h3>
 
-  <!-- Campo para o ID do elemento -->
   <label>
     ID do elemento:
-    <input type="text" id="elementId" placeholder="Digite o ID">
+    <input type="text" id="elementId" placeholder="Digite ou selecione um ID">
   </label>
 
-  <!-- Checkboxes para selecionar as funções -->
   <label>
     <input type="checkbox" id="changeText"> Alterar Texto
   </label>
   <label>
-    <input type="checkbox" id="changeColor"> Alterar Cor
+    <input type="checkbox" id="changeColor"> Alterar Cor do Texto
   </label>
   <label>
-    <input type="checkbox" id="changeStyle"> Alterar Estilo
+    <input type="checkbox" id="changeBackground"> Alterar Fundo
+  </label>
+  <label>
+    <input type="checkbox" id="changeStyle"> Alterar Estilo (Negrito e Tamanho)
   </label>
   <label>
     <input type="checkbox" id="executeClick"> Executar Clique
   </label>
 
-  <!-- Botão para salvar -->
   <button id="saveBtn">Salvar Alterações</button>
 
-  <!-- Campo para exibir IDs detectados -->
-  <h4>ID de elementos detectados:</h4>
+  <h4>IDs detectados:</h4>
   <div id="detectedIds"></div>
 
-  <button onclick="closeDialog()">Fechar</button>
+  <button onclick="closeDialog()" style="margin-top: 20px; background-color: #888;">Fechar</button>
 </div>
 
 <script>
-  // Abrir o diálogo
   const openDialogImg = document.getElementById('openDialogImg');
   const floatingDialog = document.getElementById('floatingDialog');
   const overlay = document.getElementById('overlay');
+  const detectedIdsContainer = document.getElementById('detectedIds');
+  const elementIdField = document.getElementById('elementId');
+  const saveBtn = document.getElementById('saveBtn');
 
+  // Abrir o diálogo
   openDialogImg.addEventListener('click', () => {
     floatingDialog.style.display = 'block';
     overlay.style.display = 'block';
-    detectIds(); // Detectar IDs ao abrir o diálogo
+    detectIds();
   });
 
   // Fechar o diálogo
@@ -133,14 +181,23 @@
     overlay.style.display = 'none';
   }
 
-  // Salvar alterações
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    const elementId = document.getElementById('elementId').value;
-    const changeText = document.getElementById('changeText').checked;
-    const changeColor = document.getElementById('changeColor').checked;
-    const changeStyle = document.getElementById('changeStyle').checked;
-    const executeClick = document.getElementById('executeClick').checked;
+  // Detectar IDs de elementos
+  function detectIds() {
+    const elements = document.querySelectorAll('[id]');
+    detectedIdsContainer.innerHTML = '';
 
+    elements.forEach(el => {
+      const idButton = document.createElement('button');
+      idButton.textContent = el.id;
+      idButton.classList.add('id-button');
+      idButton.onclick = () => elementIdField.value = el.id;
+      detectedIdsContainer.appendChild(idButton);
+    });
+  }
+
+  // Salvar alterações
+  saveBtn.addEventListener('click', () => {
+    const elementId = elementIdField.value;
     const targetElement = document.getElementById(elementId);
 
     if (!targetElement) {
@@ -148,17 +205,27 @@
       return;
     }
 
+    const changeText = document.getElementById('changeText').checked;
+    const changeColor = document.getElementById('changeColor').checked;
+    const changeBackground = document.getElementById('changeBackground').checked;
+    const changeStyle = document.getElementById('changeStyle').checked;
+    const executeClick = document.getElementById('executeClick').checked;
+
     if (changeText) {
-      targetElement.textContent = 'Texto alterado pelo diálogo!';
+      targetElement.textContent = 'Texto alterado!';
     }
 
     if (changeColor) {
       targetElement.style.color = 'blue';
     }
 
+    if (changeBackground) {
+      targetElement.style.backgroundColor = 'yellow';
+    }
+
     if (changeStyle) {
-      targetElement.style.fontSize = '20px';
       targetElement.style.fontWeight = 'bold';
+      targetElement.style.fontSize = '20px';
     }
 
     if (executeClick && targetElement.tagName === 'BUTTON') {
@@ -167,20 +234,6 @@
 
     closeDialog();
   });
-
-  // Detectar IDs de elementos no site
-  function detectIds() {
-    const elements = document.querySelectorAll('[id]');
-    const detectedIdsContainer = document.getElementById('detectedIds');
-    detectedIdsContainer.innerHTML = '';
-
-    elements.forEach((el) => {
-      const id = el.id;
-      const idDiv = document.createElement('div');
-      idDiv.textContent = id;
-      detectedIdsContainer.appendChild(idDiv);
-    });
-  }
 </script>
 
 </body>
