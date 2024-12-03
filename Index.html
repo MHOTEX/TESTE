@@ -1,244 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linear Layout System</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            height: 100vh;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diálogo Arrastável</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Linear Layout (Flutuante no canto superior esquerdo) */
-        .linear-layout {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
+    #openDialogImg {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
 
-        .linear1 {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Alinha no canto superior esquerdo */
-            position: absolute;  /* Flutuante */
-            top: 0;
-            left: 0;
-            padding: 10px;
-            z-index: 1;
-            transition: all 0.3s ease-in-out;
-        }
+    #openDialogImg:hover {
+      transform: scale(1.1);
+    }
 
-        /* Estilo da imagem */
-        .imageview-abrir-menu {
-            width: 200px; /* Tamanho ajustado */
-            height: auto;
-            cursor: pointer;
-        }
+    #floatingDialog {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      z-index: 1000;
+      cursor: grab;
+    }
 
-        /* Menu (inicialmente oculto) */
-        .linear2 {
-            display: none; /* Oculta o menu */
-            width: 200px;
-            background-color: #000000;
-            padding: 8px;
-            margin: 8px 0;
-            border-radius: 5px;
-        }
+    #dialogHeader {
+      margin: 0;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      border-radius: 15px 15px 0 0;
+      cursor: move;
+    }
 
-        .linear3 {
-            display: flex;
-            flex-direction: row;
-            background-color: #FFFFFF;
-            padding: 8px;
-            border-radius: 5px;
-        }
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 14px;
+    }
 
-        .textview1 {
-            background-color: #000000;
-            color: #FFFFFF;
-            padding: 8px;
-            text-align: center;
-            flex-grow: 1;
-            font-size: 16px;
-        }
+    input[type="text"], button {
+      width: 325px;
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid #ccc;
+      font-size: 14px;
+    }
 
-        .linear4 {
-            background-color: #FFFFFF;
-            padding: 8px;
-            margin: 8px 0;
-            height: 200px;
-            overflow-y: auto;
-            border-radius: 5px;
-        }
+    button {
+      background-color: #4CAF50;
+      width: 345px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-        .vscroll1 {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            overflow-y: auto;
-        }
+    button:hover {
+      background-color: #45a049;
+    }
 
-        .linear7 {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+    #detectedIds {
+      margin-top: 5px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 1px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
 
-        .linear-borda-button {
-            display: flex;
-            flex-direction: row;
-            background-color: #000000;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-        }
+    .id-button {
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
 
-        .button {
-            background-color: #FFFFFF;
-            color: #000000;
-            padding: 8px;
-            border: none;
-            font-size: 12px;
-            flex-grow: 1;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    .id-button:hover {
+      background-color: #0056b3;
+    }
 
-        .linear-divisor {
-            height: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .linear5 {
-            display: flex;
-            flex-direction: row;
-            background-color: #FFFFFF;
-            padding: 8px;
-            align-items: center;
-            border-radius: 5px;
-        }
-
-        .button-small {
-            background-color: #000000;
-            color: #FFFFFF;
-            padding: 8px;
-            border: none;
-            font-size: 12px;
-            cursor: pointer;
-            flex-grow: 1;
-            border-radius: 5px;
-        }
-
-        .linear-divisor1-button {
-            width: 5px;
-        }
-
-        /* Hidden content for "Função 1" and "Função 2" */
-        .hidden-content {
-            display: none;
-            background-color: #e0e0e0;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        /* When menu is visible */
-        .menu-visible {
-            display: block !important;
-        }
-    </style>
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
-    <div class="linear-layout">
-        <!-- Linear1 - Flutuante -->
-        <div class="linear1">
-            <!-- Image to open the menu -->
-            <img src="https://via.placeholder.com/150" alt="Imagem do Menu" class="imageview-abrir-menu" id="openMenuBtn">
-            
-            <!-- Menu (Hidden by default) -->
-            <div class="linear2" id="menu">
-                <div class="linear3">
-                    <div class="textview1">MOD MENU</div>
-                </div>
-                <div class="linear4">
-                    <div class="vscroll1">
-                        <div class="linear7">
-                            <div class="linear-borda-button">
-                                <button class="button" id="func1">Função 1</button>
-                            </div>
-                            <div class="linear-divisor"></div>
-                            <div class="linear-borda-button">
-                                <button class="button" id="func2">Função 2</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="linear5">
-                    <button class="button-small" id="btn_sair">Sair</button>
-                    <div class="linear-divisor1-button"></div>
-                    <button class="button-small" id="btn_fechar">Fechar</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- Hidden content for "Função 1" and "Função 2" -->
-        <div id="content_func1" class="hidden-content">
-            <h3>Conteúdo da Função 1</h3>
-            <p>Detalhes da Função 1 aqui...</p>
-        </div>
-        <div id="content_func2" class="hidden-content">
-            <h3>Conteúdo da Função 2</h3>
-            <p>Detalhes da Função 2 aqui...</p>
-        </div>
-    </div>
+<img id="openDialogImg" src="https://via.placeholder.com/60x60.png?text=Bola" alt="Abrir Diálogo">
 
-    <script>
-        // Variables to access elements
-        const openMenuBtn = document.getElementById('openMenuBtn');
-        const menu = document.getElementById('menu');
-        const btnFechar = document.getElementById('btn_fechar');
-        const btnSair = document.getElementById('btn_sair');
-        const func1Btn = document.getElementById('func1');
-        const func2Btn = document.getElementById('func2');
-        const contentFunc1 = document.getElementById('content_func1');
-        const contentFunc2 = document.getElementById('content_func2');
+<div id="overlay"></div>
 
-        // Open the menu when the image is clicked
-        openMenuBtn.addEventListener('click', function() {
-            menu.classList.add('menu-visible');
-        });
+<div id="floatingDialog">
+  <h3 id="dialogHeader">Editar Elementos da Página</h3>
 
-        // Close the menu when "Fechar" button is clicked
-        btnFechar.addEventListener('click', function() {
-            menu.classList.remove('menu-visible');
-        });
+  <label>
+    ID do elemento:
+    <input type="text" id="elementId" placeholder="Digite ou selecione um ID">
+  </label>
 
-        // Close everything when "Sair" button is clicked
-        btnSair.addEventListener('click', function() {
-            menu.classList.remove('menu-visible');
-            alert("Saindo...");
-            // Optionally, hide the image here if needed
-        });
+  <label>
+    <input type="checkbox" id="changeText"> Alterar Texto
+  </label>
+  <label>
+    <input type="checkbox" id="changeColor"> Alterar Cor do Texto
+  </label>
+  <label>
+    <input type="checkbox" id="changeBackground"> Alterar Fundo
+  </label>
+  <label>
+    <input type="checkbox" id="changeStyle"> Alterar Estilo (Negrito e Tamanho)
+  </label>
+  <label>
+    <input type="checkbox" id="executeClick"> Executar Clique
+  </label>
 
-        // Show content for "Função 1"
-        func1Btn.addEventListener('click', function() {
-            alert('Função 1 ativada!');
-            contentFunc1.style.display = 'block';
-            contentFunc2.style.display = 'none';
-        });
+  <button id="saveBtn">Salvar Alterações</button>
 
-        // Show content for "Função 2"
-        func2Btn.addEventListener('click', function() {
-            alert('Função 2 ativada!');
-            contentFunc2.style.display = 'block';
-            contentFunc1.style.display = 'none';
-        });
-    </script>
+  <h4>IDs detectados:</h4>
+  <div id="detectedIds"></div>
+
+  <button onclick="closeDialog()" style="margin-top: 20px; background-color: #888;">Fechar</button>
+</div>
+
+<script>
+  const openDialogImg = document.getElementById('openDialogImg');
+  const floatingDialog = document.getElementById('floatingDialog');
+  const overlay = document.getElementById('overlay');
+  const detectedIdsContainer = document.getElementById('detectedIds');
+  const elementIdField = document.getElementById('elementId');
+  const saveBtn = document.getElementById('saveBtn');
+
+  // Abrir o diálogo
+  openDialogImg.addEventListener('click', () => {
+    floatingDialog.style.display = 'block';
+    overlay.style.display = 'block';
+    detectIds();
+  });
+
+  // Fechar o diálogo
+  function closeDialog() {
+    floatingDialog.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  // Detectar IDs de elementos
+  function detectIds() {
+    const elements = document.querySelectorAll('[id]');
+    detectedIdsContainer.innerHTML = '';
+
+    elements.forEach(el => {
+      const idButton = document.createElement('button');
+      idButton.textContent = el.id;
+      idButton.classList.add('id-button');
+      idButton.onclick = () => elementIdField.value = el.id;
+      detectedIdsContainer.appendChild(idButton);
+    });
+  }
+
+  // Salvar alterações
+  saveBtn.addEventListener('click', () => {
+    const elementId = elementIdField.value;
+    const targetElement = document.getElementById(elementId);
+
+    if (!targetElement) {
+      alert('Elemento não encontrado!');
+      return;
+    }
+
+    const changeText = document.getElementById('changeText').checked;
+    const changeColor = document.getElementById('changeColor').checked;
+    const changeBackground = document.getElementById('changeBackground').checked;
+    const changeStyle = document.getElementById('changeStyle').checked;
+    const executeClick = document.getElementById('executeClick').checked;
+
+    if (changeText) {
+      targetElement.textContent = 'Texto alterado!';
+    }
+
+    if (changeColor) {
+      targetElement.style.color = 'blue';
+    }
+
+    if (changeBackground) {
+      targetElement.style.backgroundColor = 'yellow';
+    }
+
+    if (changeStyle) {
+      targetElement.style.fontWeight = 'bold';
+      targetElement.style.fontSize = '20px';
+    }
+
+    if (executeClick && targetElement.tagName === 'BUTTON') {
+      targetElement.click();
+    }
+
+    closeDialog();
+  });
+</script>
+
 </body>
 </html>
