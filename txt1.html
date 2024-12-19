@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quadrado Flutuante</title>
+    <title>Quadrado Flutuante com Verificação Automática</title>
     <style>
         /* Estilo do quadrado flutuante */
         #floating-square {
@@ -35,15 +35,15 @@
     </style>
 </head>
 <body>
-    <h1>Quadrado Flutuante</h1>
+    <h1>Quadrado Flutuante com Verificação Automática</h1>
 
     <!-- Quadrado flutuante -->
-    <div id="floating-square">Verificar</div>
+    <div id="floating-square">Verificando...</div>
 
     <script>
-        // Simular o conteúdo dinâmico da página
+        // Simular o conteúdo dinâmico da página (isso pode ser atualizado em tempo real)
         const dynamicContent = {
-            centralContent: "Star" // Altere para "Bomb" para simular uma bomba
+            centralContent: "Star" // Altere para "Bomb" ou outra string para simular alterações
         };
 
         // Função para verificar o conteúdo do quadrado central
@@ -52,9 +52,11 @@
 
             if (dynamicContent.centralContent === 'Star') {
                 square.classList.add('green');
+                square.classList.remove('red');
                 square.innerText = 'Estrela';
             } else if (dynamicContent.centralContent === 'Bomb') {
                 square.classList.add('red');
+                square.classList.remove('green');
                 square.innerText = 'Bomba';
             } else {
                 square.classList.remove('green', 'red');
@@ -62,8 +64,8 @@
             }
         }
 
-        // Executar a verificação
-        checkContent();
+        // Configurar a verificação para rodar a cada 2 segundos
+        setInterval(checkContent, 2000);
     </script>
 </body>
 </html>
