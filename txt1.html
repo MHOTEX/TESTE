@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quadrado Flutuante com Verificação Automática</title>
+    <title>Quadrado Flutuante com Emojis</title>
     <style>
         /* Estilo do quadrado flutuante */
         #floating-square {
@@ -16,29 +16,18 @@
             justify-content: center;
             align-items: center;
             border: 2px solid #000;
-            font-size: 18px;
+            font-size: 36px;
             font-weight: bold;
             text-align: center;
             background-color: white;
         }
-
-        /* Cores dinâmicas */
-        .green {
-            background-color: green;
-            color: white;
-        }
-
-        .red {
-            background-color: red;
-            color: white;
-        }
     </style>
 </head>
 <body>
-    <h1>Quadrado Flutuante com Verificação Automática</h1>
+    <h1>Quadrado Flutuante com Emojis</h1>
 
     <!-- Quadrado flutuante -->
-    <div id="floating-square">Verificando...</div>
+    <div id="floating-square">🔍</div>
 
     <script>
         // Simular o conteúdo dinâmico da página (isso pode ser atualizado em tempo real)
@@ -51,16 +40,11 @@
             const square = document.getElementById('floating-square');
 
             if (dynamicContent.centralContent === 'Star') {
-                square.classList.add('green');
-                square.classList.remove('red');
-                square.innerText = 'Estrela';
+                square.innerText = '⭐'; // Emoji de estrela
             } else if (dynamicContent.centralContent === 'Bomb') {
-                square.classList.add('red');
-                square.classList.remove('green');
-                square.innerText = 'Bomba';
+                square.innerText = '💣'; // Emoji de bomba
             } else {
-                square.classList.remove('green', 'red');
-                square.innerText = 'Nada';
+                square.innerText = '🔍'; // Emoji padrão (nada encontrado)
             }
         }
 
