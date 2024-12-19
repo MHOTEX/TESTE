@@ -1,126 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diálogo Arrastável</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diálogo Arrastável</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f9;
+margin: 0;
+padding: 0;
+}
 
-    #openDialogImg {
-      width: 60px;
-      height: 60px;
-      cursor: pointer;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
+#openDialogImg {
+width: 60px;
+height: 60px;
+cursor: pointer;
+position: fixed;
+bottom: 20px;
+right: 20px;
+border-radius: 50%;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease;
+}
 
-    #openDialogImg:hover {
-      transform: scale(1.1);
-    }
+#openDialogImg:hover {
+transform: scale(1.1);
+}
 
-    #floatingDialog {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 350px;
-      padding: 20px;
-      background-color: #ffffff;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      z-index: 1000;
-      cursor: grab;
-    }
+#floatingDialog {
+display: none;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 350px;
+padding: 20px;
+background-color: #ffffff;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+border-radius: 15px;
+z-index: 1000;
+cursor: grab;
+}
 
-    #dialogHeader {
-      margin: 0;
-      padding: 10px;
-      background-color: #007BFF;
-      color: white;
-      text-align: center;
-      border-radius: 15px 15px 0 0;
-      cursor: move;
-    }
+#dialogHeader {
+margin: 0;
+padding: 10px;
+background-color: #007BFF;
+color: white;
+text-align: center;
+border-radius: 15px 15px 0 0;
+cursor: move;
+}
 
-    label {
-      display: block;
-      margin: 10px 0;
-      font-size: 14px;
-    }
+label {
+display: block;
+margin: 10px 0;
+font-size: 14px;
+}
 
-    input[type="text"], button {
-      width: 325px;
-      margin-top: 5px;
-      padding: 10px;
-      border-radius: 5px;
-      border: 2px solid #ccc;
-      font-size: 14px;
-    }
+input[type="text"], button {
+width: 325px;
+margin-top: 5px;
+padding: 10px;
+border-radius: 5px;
+border: 2px solid #ccc;
+font-size: 14px;
+}
 
-    button {
-      background-color: #4CAF50;
-      width: 345px;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+button {
+background-color: #4CAF50;
+width: 345px;
+color: white;
+border: none;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
 
-    button:hover {
-      background-color: #45a049;
-    }
+button:hover {
+background-color: #45a049;
+}
 
-    #detectedIds {
-      margin-top: 5px;
-      width: 100%;
-      max-width: 400px;
-      max-height: 200px;
-      overflow-y: auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      padding: 1px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
+#detectedIds {
+margin-top: 5px;
+width: 100%;
+max-width: 400px;
+max-height: 200px;
+overflow-y: auto;
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+padding: 1px;
+background-color: #f9f9f9;
+border: 1px solid #ddd;
+border-radius: 5px;
+}
 
-    .id-button {
-      padding: 5px 10px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 12px;
-    }
+.id-button {
+padding: 5px 10px;
+background-color: #007BFF;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 12px;
+}
 
-    .id-button:hover {
-      background-color: #0056b3;
-    }
+.id-button:hover {
+background-color: #0056b3;
+}
 
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-    }
-  </style>
+#overlay {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 999;
+}
+</style>
 </head>
 <body>
 
@@ -129,111 +129,111 @@
 <div id="overlay"></div>
 
 <div id="floatingDialog">
-  <h3 id="dialogHeader">Editar Elementos da Página</h3>
+<h3 id="dialogHeader">Editar Elementos da Página</h3>
 
-  <label>
-    ID do elemento:
-    <input type="text" id="elementId" placeholder="Digite ou selecione um ID">
-  </label>
+<label>
+ID do elemento:
+<input type="text" id="elementId" placeholder="Digite ou selecione um ID">
+</label>
 
-  <label>
-    <input type="checkbox" id="changeText"> Alterar Texto
-  </label>
-  <label>
-    <input type="checkbox" id="changeColor"> Alterar Cor do Texto
-  </label>
-  <label>
-    <input type="checkbox" id="changeBackground"> Alterar Fundo
-  </label>
-  <label>
-    <input type="checkbox" id="changeStyle"> Alterar Estilo (Negrito e Tamanho)
-  </label>
-  <label>
-    <input type="checkbox" id="executeClick"> Executar Clique
-  </label>
+<label>
+<input type="checkbox" id="changeText"> Alterar Texto
+</label>
+<label>
+<input type="checkbox" id="changeColor"> Alterar Cor do Texto
+</label>
+<label>
+<input type="checkbox" id="changeBackground"> Alterar Fundo
+</label>
+<label>
+<input type="checkbox" id="changeStyle"> Alterar Estilo (Negrito e Tamanho)
+</label>
+<label>
+<input type="checkbox" id="executeClick"> Executar Clique
+</label>
 
-  <button id="saveBtn">Salvar Alterações</button>
+<button id="saveBtn">Salvar Alterações</button>
 
-  <h4>IDs detectados:</h4>
-  <div id="detectedIds"></div>
+<h4>IDs detectados:</h4>
+<div id="detectedIds"></div>
 
-  <button onclick="closeDialog()" style="margin-top: 20px; background-color: #888;">Fechar</button>
+<button onclick="closeDialog()" style="margin-top: 20px; background-color: #888;">Fechar</button>
 </div>
 
 <script>
-  const openDialogImg = document.getElementById('openDialogImg');
-  const floatingDialog = document.getElementById('floatingDialog');
-  const overlay = document.getElementById('overlay');
-  const detectedIdsContainer = document.getElementById('detectedIds');
-  const elementIdField = document.getElementById('elementId');
-  const saveBtn = document.getElementById('saveBtn');
+const openDialogImg = document.getElementById('openDialogImg');
+const floatingDialog = document.getElementById('floatingDialog');
+const overlay = document.getElementById('overlay');
+const detectedIdsContainer = document.getElementById('detectedIds');
+const elementIdField = document.getElementById('elementId');
+const saveBtn = document.getElementById('saveBtn');
 
-  // Abrir o diálogo
-  openDialogImg.addEventListener('click', () => {
-    floatingDialog.style.display = 'block';
-    overlay.style.display = 'block';
-    detectIds();
-  });
+// Abrir o diálogo
+openDialogImg.addEventListener('click', () => {
+floatingDialog.style.display = 'block';
+overlay.style.display = 'block';
+detectIds();
+});
 
-  // Fechar o diálogo
-  function closeDialog() {
-    floatingDialog.style.display = 'none';
-    overlay.style.display = 'none';
-  }
+// Fechar o diálogo
+function closeDialog() {
+floatingDialog.style.display = 'none';
+overlay.style.display = 'none';
+}
 
-  // Detectar IDs de elementos
-  function detectIds() {
-    const elements = document.querySelectorAll('[id]');
-    detectedIdsContainer.innerHTML = '';
+// Detectar IDs de elementos
+function detectIds() {
+const elements = document.querySelectorAll('[id]');
+detectedIdsContainer.innerHTML = '';
 
-    elements.forEach(el => {
-      const idButton = document.createElement('button');
-      idButton.textContent = el.id;
-      idButton.classList.add('id-button');
-      idButton.onclick = () => elementIdField.value = el.id;
-      detectedIdsContainer.appendChild(idButton);
-    });
-  }
+elements.forEach(el => {
+const idButton = document.createElement('button');
+idButton.textContent = el.id;
+idButton.classList.add('id-button');
+idButton.onclick = () => elementIdField.value = el.id;
+detectedIdsContainer.appendChild(idButton);
+});
+}
 
-  // Salvar alterações
-  saveBtn.addEventListener('click', () => {
-    const elementId = elementIdField.value;
-    const targetElement = document.getElementById(elementId);
+// Salvar alterações
+saveBtn.addEventListener('click', () => {
+const elementId = elementIdField.value;
+const targetElement = document.getElementById(elementId);
 
-    if (!targetElement) {
-      alert('Elemento não encontrado!');
-      return;
-    }
+if (!targetElement) {
+alert('Elemento não encontrado!');
+return;
+}
 
-    const changeText = document.getElementById('changeText').checked;
-    const changeColor = document.getElementById('changeColor').checked;
-    const changeBackground = document.getElementById('changeBackground').checked;
-    const changeStyle = document.getElementById('changeStyle').checked;
-    const executeClick = document.getElementById('executeClick').checked;
+const changeText = document.getElementById('changeText').checked;
+const changeColor = document.getElementById('changeColor').checked;
+const changeBackground = document.getElementById('changeBackground').checked;
+const changeStyle = document.getElementById('changeStyle').checked;
+const executeClick = document.getElementById('executeClick').checked;
 
-    if (changeText) {
-      targetElement.textContent = 'Texto alterado!';
-    }
+if (changeText) {
+targetElement.textContent = 'Texto alterado!';
+}
 
-    if (changeColor) {
-      targetElement.style.color = 'blue';
-    }
+if (changeColor) {
+targetElement.style.color = 'blue';
+}
 
-    if (changeBackground) {
-      targetElement.style.backgroundColor = 'yellow';
-    }
+if (changeBackground) {
+targetElement.style.backgroundColor = 'yellow';
+}
 
-    if (changeStyle) {
-      targetElement.style.fontWeight = 'bold';
-      targetElement.style.fontSize = '20px';
-    }
+if (changeStyle) {
+targetElement.style.fontWeight = 'bold';
+targetElement.style.fontSize = '20px';
+}
 
-    if (executeClick && targetElement.tagName === 'BUTTON') {
-      targetElement.click();
-    }
+if (executeClick && targetElement.tagName === 'BUTTON') {
+targetElement.click();
+}
 
-    closeDialog();
-  });
+closeDialog();
+});
 </script>
 
 </body>
